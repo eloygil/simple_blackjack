@@ -79,12 +79,12 @@ def main(num_games, num_decks, credit, initial_bet):
                         i += 1
                 if DEBUG:
                     print "[ Card ] Bank gets " + str(new_card) + " | Now: " + str(cards_bank) + " (" + str(sum(cards_bank)) + ")"
-        if sum(cards_bank) > 21:
-            player_won = True
-        elif sum(cards_bank) > sum(cards_player):
-            bank_won = True
-        elif sum(cards_player) > sum(cards_bank):
-            player_won = True
+            if sum(cards_bank) > 21:
+                player_won = True
+            elif sum(cards_bank) > sum(cards_player):
+                bank_won = True
+            elif sum(cards_player) > sum(cards_bank):
+                player_won = True
 
         if player_won:
             player_wins += 1
