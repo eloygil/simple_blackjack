@@ -11,8 +11,7 @@ def winnerPrint(gid, text, w_cards, l_cards, remaining, money):
         print "[ Game #" + str(gid) + " ] " + text + " (" + str(sum(w_cards)) + " vs. " + str(sum(l_cards)) + ")"
 
 def getCards(n):
-    #        A  2  3  4  5  6  7  8  9  10   J   Q   K
-    #return [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10] * n
+    #     A  2  3  4  5  6  7  8  9  10   J   Q   K
     l = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10] * n
     shuffle(l)
     return l
@@ -56,6 +55,7 @@ def main(num_games, num_decks, credit, initial_bet):
         cards_bank, cards_player, cards = cardsInit(cards)
         if DEBUG:
             print "[ Start ] Bank: " + str(cards_bank) + " | Player: " + str(cards_player)
+            
         # Deal until the player stands
         while sum(cards_player) < 12 or (sum(cards_player) < bank_min_score and cards_bank[0] > 6):
             new_card, cards = drawCard(cards)
@@ -88,7 +88,6 @@ def main(num_games, num_decks, credit, initial_bet):
 
         if player_won:
             player_wins += 1
-            #bet = initial_bet
             if sum(cards_player) == 21 and len(cards_player) == 2:
                 money += bet * 1.5
                 winnerPrint(game_id, 'Player blackjack', cards_player, cards_bank, cards, money)
