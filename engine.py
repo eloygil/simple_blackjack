@@ -86,6 +86,10 @@ def main(num_games, num_decks, credit, initial_bet):
                 bank_won = True
             elif sum(cards_player) > sum(cards_bank):
                 player_won = True
+            elif sum(cards_player) == 21 and sum(cards_bank) == 21:
+                if len(cards_player) == 2 or len(cards_bank) == 2:  # Handle BJ vs 21 corner case
+                    player_won = len(cards_player) < len(cards_bank)
+                    bank_won = len(cards_bank) < len(cards_player)
 
         if player_won:
             player_wins += 1
