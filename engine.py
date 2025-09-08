@@ -116,7 +116,7 @@ def main(num_games, num_decks, credit, initial_bet):
         else:
             draws += 1
             winner_print(game_id, 'Draw', cards_bank, cards_player, cards, money)
-    logger.info(f"[ Winrate summary ] {player_wins * 100.0 / game_id}% WIN | {bank_wins * 100.0 / game_id}% LOSE | {draws * 100.0 / game_id}% DRAW | Played {game_id} games.")
+    logger.info(f"[ Winrate summary ] {player_wins * 100.0 / game_id:.2f}% WIN | {bank_wins * 100.0 / game_id:.2f}% LOSE | {draws * 100.0 / game_id:.2f}% DRAW | Played {game_id} games.")
     logger.info(f"[ Balance summary ] Credit: {credit} | Bet: {initial_bet} | Profit/Losses:  {["", "+"][money > credit]}{money-credit}")
 
 
