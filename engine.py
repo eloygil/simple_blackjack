@@ -74,13 +74,13 @@ def main(num_games, num_decks, credit, initial_bet):
 
         # Deal initial cards for player and bank
         cards_bank, cards_player, cards = cards_init(cards)
-        logger.debug("[ Start ] Bank: " + str(cards_bank) + " | Player: " + str(cards_player))
-            
+        logger.debug(f"[ Start ] Bank: {cards_bank} | Player: {cards_player}")
+
         # Deal until the player stands
         while sum(cards_player) < 12 or (sum(cards_player) < bank_min_score and cards_bank[0] > 6):
             new_card, cards = draw_card(cards)
             cards_player = get_value_adjusted_hand(cards_player, new_card)
-            logger.debug("[ Card ] Player gets " + str(new_card) + " | Now: " + str(cards_player) + " (" + str(sum(cards_player)) + ")")
+            logger.debug(f"[ Card ] Player gets {new_card} Now: {cards_player} ({sum(cards_player)})")
 
         # If the player didn't lose, deal cards for the bank
         if sum(cards_player) > 21:
@@ -89,7 +89,7 @@ def main(num_games, num_decks, credit, initial_bet):
             while sum(cards_bank) < bank_min_score:
                 new_card, cards = draw_card(cards)
                 cards_bank = get_value_adjusted_hand(cards_bank, new_card)
-                logger.debug("[ Card ] Bank gets " + str(new_card) + " | Now: " + str(cards_bank) + " (" + str(sum(cards_bank)) + ")")
+                logger.debug(f"[ Card ] Bank gets {new_card} Now: {cards_bank} ({sum(cards_bank)})")
             if sum(cards_bank) > 21:
                 player_won = True
             elif sum(cards_bank) > sum(cards_player):
