@@ -1,17 +1,20 @@
 import numpy as np
-from random import shuffle
 import click
+import logging
+import coloredlogs
+import os
+from dotenv import load_dotenv
+from random import shuffle
 
-DEBUG = True
+load_dotenv()
+DEBUG = os.getenv("DEBUG") == "true"
 
-
-def debug_print(msg):
-    if DEBUG:
-        print(msg)
+logger = logging.getLogger("simple-blackjack")
+coloredlogs.install(level="DEBUG" if DEBUG else "INFO", logger=logger)
 
 
 def winner_print(gid, text, w_cards, l_cards, remaining, money):
-    debug_print("[ Game #" + str(gid) + " ] " + text + " (" + str(sum(w_cards)) + " vs. " + str(sum(l_cards)) + ") | " + str(w_cards) + " vs. " + str(l_cards) + " | Remaining cards: " + str(remaining) + " | New balance: " + str(money))
+    logger.debug("[ Game #" + str(gid) + " ] " + text + " (" + str(sum(w_cards)) + " vs. " + str(sum(l_cards)) + ") | " + str(w_cards) + " vs. " + str(l_cards) + " | Remaining cards: " + str(remaining) + " | New balance: " + str(money))
     if not DEBUG and gid % 100 == 0:
         print("[ Game #" + str(gid) + " ] " + text + " (" + str(sum(w_cards)) + " vs. " + str(sum(l_cards)) + ")")
 
@@ -71,13 +74,13 @@ def main(num_games, num_decks, credit, initial_bet):
 
         # Deal initial cards for player and bank
         cards_bank, cards_player, cards = cards_init(cards)
-        debug_print("[ Start ] Bank: " + str(cards_bank) + " | Player: " + str(cards_player))
+        logger.debug("[ Start ] Bank: " + str(cards_bank) + " | Player: " + str(cards_player))
             
         # Deal until the player stands
         while sum(cards_player) < 12 or (sum(cards_player) < bank_min_score and cards_bank[0] > 6):
             new_card, cards = draw_card(cards)
             cards_player = get_value_adjusted_hand(cards_player, new_card)
-            debug_print("[ Card ] Player gets " + str(new_card) + " | Now: " + str(cards_player) + " (" + str(sum(cards_player)) + ")")
+            logger.debug("[ Card ] Player gets " + str(new_card) + " | Now: " + str(cards_player) + " (" + str(sum(cards_player)) + ")")
 
         # If the player didn't lose, deal cards for the bank
         if sum(cards_player) > 21:
@@ -86,7 +89,7 @@ def main(num_games, num_decks, credit, initial_bet):
             while sum(cards_bank) < bank_min_score:
                 new_card, cards = draw_card(cards)
                 cards_bank = get_value_adjusted_hand(cards_bank, new_card)
-                debug_print("[ Card ] Bank gets " + str(new_card) + " | Now: " + str(cards_bank) + " (" + str(sum(cards_bank)) + ")")
+                logger.debug("[ Card ] Bank gets " + str(new_card) + " | Now: " + str(cards_bank) + " (" + str(sum(cards_bank)) + ")")
             if sum(cards_bank) > 21:
                 player_won = True
             elif sum(cards_bank) > sum(cards_player):
