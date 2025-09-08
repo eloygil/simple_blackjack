@@ -14,9 +14,9 @@ coloredlogs.install(level="DEBUG" if DEBUG else "INFO", logger=logger)
 
 
 def winner_print(gid, text, w_cards, l_cards, remaining, money):
-    logger.debug("[ Game #" + str(gid) + " ] " + text + " (" + str(sum(w_cards)) + " vs. " + str(sum(l_cards)) + ") | " + str(w_cards) + " vs. " + str(l_cards) + " | Remaining cards: " + str(remaining) + " | New balance: " + str(money))
+    logger.debug(f"[ Game #{gid} ] {text} ({sum(w_cards)} vs. {sum(l_cards)}) | {w_cards} vs. {l_cards} Remaining cards: {remaining} | New balance: {money}")
     if not DEBUG and gid % 100 == 0:
-        print("[ Game #" + str(gid) + " ] " + text + " (" + str(sum(w_cards)) + " vs. " + str(sum(l_cards)) + ")")
+        logger.info(f"[ Game #{gid} ] {text} ({sum(w_cards)} vs. {sum(l_cards)})")
 
 
 def get_cards(n):
@@ -116,8 +116,8 @@ def main(num_games, num_decks, credit, initial_bet):
         else:
             draws += 1
             winner_print(game_id, 'Draw', cards_bank, cards_player, cards, money)
-    print("[ Winrate summary ] " + str(float(player_wins * 100.0 / game_id)) + "% WIN | " + str(float(bank_wins * 100.0 / game_id)) + "% LOSE | " + str(float(draws * 100.0 / game_id)) + "% DRAW | Played " + str(game_id) + " games.")
-    print("[ Balance summary ] Credit: " + str(credit) + " | Bet: " + str(initial_bet) + " | Profit/Losses: " + ["", "+"][money-credit > 0] + str(money-credit))
+    logger.info(f"[ Winrate summary ] {player_wins * 100.0 / game_id}% WIN | {bank_wins * 100.0 / game_id}% LOSE | {draws * 100.0 / game_id}% DRAW | Played {game_id} games.")
+    logger.info(f"[ Balance summary ] Credit: {credit} | Bet: {initial_bet} | Profit/Losses:  {["", "+"][money > credit]}{money-credit}")
 
 
 if __name__ == "__main__":
